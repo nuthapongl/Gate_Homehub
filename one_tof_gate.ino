@@ -10,7 +10,7 @@ int ROI_X[2] = {7, 7};
 int ROI_Y[2] = {16, 16};
 int ROI_C[2] = {159, 231};
 int distance[2] = {0, 0};
-int limit_range = 700;
+int limit_range = 650;
 int trigL[4];
 int trigR[4];
 
@@ -38,10 +38,10 @@ void setup()
     while (1);
   }
 
-  sensor.setDistanceMode(VL53L1X::Long);
-  sensor.setMeasurementTimingBudget(15000);
+  sensor.setDistanceMode(VL53L1X::Short);
+  sensor.setMeasurementTimingBudget(20000);
 
-  sensor.startContinuous(20);
+  sensor.startContinuous(25);
 
   delay(500);
   Serial.println(sensor.getROICenter());
@@ -112,15 +112,13 @@ void loop()
     Start_timeL = 0;
     //delay(1000);
     if (distance[0] >=  limit_range && distance[1] >= limit_range) {
-      Serial.println("1 >2 = OUT");
-      if (Status == 1) {
-        Status = 2;
-        duration = convertTime((millis() - startTime)/1000);
-        Serial.printf("Status: Complete, duration: %.2f minutes.\n", duration);
-        Status = 0;
-        duration = 0;
-        previousTime_mqtt = 0;
+
+      Serial.println("2>1 = IN");
+      if (Status == 0) {
+        previousTime_mqtt = startTime = millis();
+        Status = 1;
       }
+
 
 
       //      //  Serial.println("reset");
@@ -145,10 +143,14 @@ void loop()
 
     Start_timeR = 0;
     if (distance[0] >=  limit_range && distance[1] >= limit_range) {
-      Serial.println("2>1 = IN");
-            if (Status == 0) {
-        previousTime_mqtt = startTime = millis();
-        Status = 1;
+      Serial.println("1 >2 = OUT");
+      if (Status == 1) {
+        Status = 2;
+        duration = convertTime((millis() - startTime) / 1000);
+        Serial.printf("Status: Complete, duration: %.2f minutes.\n", duration);
+        Status = 0;
+        duration = 0;
+        previousTime_mqtt = 0;
       }
 
 
@@ -183,17 +185,17 @@ void loop()
 
   if (Status == 1 && millis() - previousTime_mqtt >= interval_mqtt) {
     previousTime_mqtt = millis();
-   // duration += 5.0;
-    duration = convertTime((millis() - startTime)/1000);
+    // duration += 5.0;
+    duration = convertTime((millis() - startTime) / 1000);
     Serial.printf("Status: On going, duration: %.2f minutes.\n", duration);
   }
 }
 
 float convertTime(uint32_t secs) {
   uint32_t m, s;
-  m = secs/60;
+  m = secs / 60;
   s = secs % 60;
-  float result = m + (s/100.0);
-  Serial.printf("result . %.2f ",result);
+  float result = m + (s / 100.0);
+  Serial.printf("result . %.2f ", result);
   return result;
 }
