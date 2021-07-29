@@ -15,8 +15,7 @@ int trigR[4];
 
 long Start_timeL = 0;
 long Start_timeR = 0;
-//test
-//used for our timing loop
+
 int mInterval = 100; //refresh rate of 10hz
 long Restart_Time = 0;
 int detect_distance = 0;
