@@ -111,10 +111,14 @@ void loop()
     Start_timeL = 0;
     //delay(1000);
     if (distance[0] >=  limit_range && distance[1] >= limit_range) {
-      Serial.println("1 >2 = IN");
-      if (Status == 0) {
-        previousTime_mqtt = startTime = millis();
-        Status = 1;
+      Serial.println("1 >2 = OUT");
+      if (Status == 1) {
+        Status = 2;
+        duration = convertTime((millis() - startTime)/1000);
+        Serial.printf("Status: Complete, duration: %.2f minutes.\n", duration);
+        Status = 0;
+        duration = 0;
+        previousTime_mqtt = 0;
       }
 
 
@@ -140,15 +144,13 @@ void loop()
 
     Start_timeR = 0;
     if (distance[0] >=  limit_range && distance[1] >= limit_range) {
-      Serial.println("2>1 = OUT");
-      if (Status == 1) {
-        Status = 2;
-        duration = convertTime((millis() - startTime)/1000);
-        Serial.printf("Status: Complete, duration: %.2f minutes.\n", duration);
-        Status = 0;
-        duration = 0;
-        previousTime_mqtt = 0;
+      Serial.println("2>1 = IN");
+            if (Status == 0) {
+        previousTime_mqtt = startTime = millis();
+        Status = 1;
       }
+
+
       //      doc["deviceId"] = "9da011eb-00ee-47ae-b055-22c58a2985cc";
       //      doc["direction"] = "in";
       //      serializeJson(doc, Serial);
