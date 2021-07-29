@@ -1,10 +1,3 @@
-/*
-  This example takes range measurements with the VL53L1X and displays additional
-  details (status and signal/ambient rates) for each measurement, which can help
-  you determine whether the sensor is operating normally and the reported range is
-  valid. The range is in units of mm, and the rates are in units of MCPS (mega
-  counts per second).
-*/
 
 #include <Wire.h>
 #include <VL53L1X.h>
