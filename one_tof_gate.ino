@@ -60,7 +60,7 @@ void loop()
     sensor.read();
     distance[i] = sensor.ranging_data.range_mm;
   }
-  Serial.printf("%d %d \n", distance[0], distance[1]);
+  //Serial.printf("%d %d \n", distance[0], distance[1]);
 
   if (distance[0] < limit_range - 50 && trigL[0] == 0 && trigR[0] == 0 ) {
     trigL[0] = 1;
