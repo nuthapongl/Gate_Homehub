@@ -1,5 +1,5 @@
 
-// rev 1.0
+// rev 1.1
 #include <Wire.h>
 #include <VL53L1X.h>
 
